@@ -3,29 +3,42 @@ import urllib.request
 import logging
 import datetime
 
+#url containing needed data
 user_url = urllib.request.Request('http://s3.amazonaws.com/cuny-is211-spring2015/birthdays100.csv')
 
-
+#function that downloads the needed data
 def downloadData(url = 'http://s3.amazonaws.com/cuny-is211-spring2015/birthdays100.csv'):
-    """Downloads the data"""
     with urllib.request.urlopen(url) as response:
-        data = response.read().decode('utf-8')
-        return data
+        content = response.read().decode('utf-8')
+        return content
 
-print(downloadData(user_url))
-
+#function that
 def processData(file_content):
+    parsed_dict ={}
+    header = True
+    for data in file_content.split('\n'):
+        if header:
+            header = False
+            continue
+        else:
+            parsed_data = data.split(',')
+            parsed_dict[parsed_data[0]] = (parsed_data[1], parsed_data[2])
+            print(parsed_dict)
+            continue
+    return parsed_dict
+
     #format = "%d %m %y"
-    for i in file_content:
-        #list_data = datetime.datetime.strptime(index, format)
-        print(i)
+    #list_data = datetime.datetime.strptime(index, format)
+        #print(i)
 '''
     with file_content as f:
         reader = list(f)
         print(map(lambda x: dict(zip(reader[0], x)), reader))
  '''
 
-print(processData(downloadData(user_url)))
+print(downloadData(user_url))
+
+processData(downloadData(user_url))
 
 
 def displayPerson(id, personData):
