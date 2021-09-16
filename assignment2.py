@@ -16,65 +16,39 @@ def downloadData(url):
 def processData(file_content):
     parsed_dict ={}
     header = True
+    linenum = -1
     for data in file_content.split('\n')[:-1]:
+        linenum += 1
         if header:
             header = False
             continue
         else:
             parsed_data = data.split(',')
-            #stripped_date = datetime.datetime.strptime((parsed_data[2]), '%d/%m/%Y')
-            #logger.error('Error processing line <linenum> for ID <id>”,')
-            #print(stripped_date)
-            parsed_dict[parsed_data[0]] = (parsed_data[1], parsed_data[2])
-            #print(parsed_dict)
+            try:
+                stripped_date = datetime.datetime.strptime((parsed_data[2]), '%d/%m/%Y')
+                parsed_dict[parsed_data[0]] = (parsed_data[1], stripped_date)
+            except ValueError:
+                logging.error(f'Error processing line:{linenum} for ID:{parsed_data[0]}')
     return parsed_dict
-
-    #format = "%d %m %y"
-    #list_data = datetime.datetime.strptime(index, format)
-        #print(i)
 
 #print(downloadData(user_url))
 
-#print(processData(downloadData(user_url)))
+#processData(downloadData(user_url))
 
 new_dict = processData(downloadData(user_url))
 
+# takes in an id and a dictionary, checks if the id exists, and prints out the ID, name, and birthday of the associated person
 def displayPerson(id, personData):
-    new_id = personData[str(id)]
-    name = new_id[0]
-    birthday = new_id[1]
-    print(id)
-    print(new_id)
-    print(name)
-    print(birthday)
-    '''if personData.get(new_id):
-        print('hi!')
+    id_str = str(id)
+    person = personData.get(id_str)
+    print(personData.get(id_str))
+    print()
+    if person:
+        print(f'Person {id} is {person[0]} with a birthday of {person[1]}')
     else:
-        print('No user with that ID.')
-'''
-    for id in personData:
-        print(id)
-        print(personData[id])
-        print(id, 'hi')
-        if str(id) == new_id:
-            print("Data was found")
-            break
-        else:
-            print("Data was not found")
-            break
+        print('No such person exists.')
 
-
-
-
-    '''if id == personData[id]:
-        return personData[id]
-    else:
-        
-
-        if id == personData[id]:
-            print('Person ', id, 'is ', pes)'''
-
-displayPerson(3, new_dict)
+displayPerson(6, new_dict)
 
 def main(url):
     print(f"Running main with URL = {url}...")
