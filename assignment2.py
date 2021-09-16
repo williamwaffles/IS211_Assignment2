@@ -12,7 +12,7 @@ def downloadData(url):
         content = response.read().decode('utf-8')
         return content
 
-#function that
+#function that parses the data into a dictionary with a tuple as a value
 def processData(file_content):
     parsed_dict ={}
     header = True
@@ -23,6 +23,7 @@ def processData(file_content):
         else:
             parsed_data = data.split(',')
             #stripped_date = datetime.datetime.strptime((parsed_data[2]), '%d/%m/%Y')
+            #logger.error('Error processing line <linenum> for ID <id>”,')
             #print(stripped_date)
             parsed_dict[parsed_data[0]] = (parsed_data[1], parsed_data[2])
             #print(parsed_dict)
@@ -32,13 +33,48 @@ def processData(file_content):
     #list_data = datetime.datetime.strptime(index, format)
         #print(i)
 
-print(downloadData(user_url))
+#print(downloadData(user_url))
 
-print(processData(downloadData(user_url)))
+#print(processData(downloadData(user_url)))
 
+new_dict = processData(downloadData(user_url))
 
 def displayPerson(id, personData):
-    pass
+    new_id = personData[str(id)]
+    name = new_id[0]
+    birthday = new_id[1]
+    print(id)
+    print(new_id)
+    print(name)
+    print(birthday)
+    '''if personData.get(new_id):
+        print('hi!')
+    else:
+        print('No user with that ID.')
+'''
+    for id in personData:
+        print(id)
+        print(personData[id])
+        print(id, 'hi')
+        if str(id) == new_id:
+            print("Data was found")
+            break
+        else:
+            print("Data was not found")
+            break
+
+
+
+
+    '''if id == personData[id]:
+        return personData[id]
+    else:
+        
+
+        if id == personData[id]:
+            print('Person ', id, 'is ', pes)'''
+
+displayPerson(3, new_dict)
 
 def main(url):
     print(f"Running main with URL = {url}...")
