@@ -31,31 +31,34 @@ def processData(file_content):
                 logging.error(f'Error processing line:{linenum} for ID:{parsed_data[0]}')
     return parsed_dict
 
-#print(downloadData(user_url))
-
-#processData(downloadData(user_url))
-
-new_dict = processData(downloadData(user_url))
 
 # takes in an id and a dictionary, checks if the id exists, and prints out the ID, name, and birthday of the associated person
 def displayPerson(id, personData):
-    id_str = str(id)
-    person = personData.get(id_str)
-    print(personData.get(id_str))
-    print()
+    #id_str = str(id)
+    person = personData.get(id)
+    print(personData.get(id))
     if person:
         print(f'Person {id} is {person[0]} with a birthday of {person[1]}')
     else:
         print('No such person exists.')
 
-displayPerson(6, new_dict)
-
 def main(url):
-    print(f"Running main with URL = {url}...")
+    print(f"Running main with URL = ...")
+
     pass
+
+main(user_url)
 
 if __name__ == "__main__":
     """Main entry point"""
+    new_dict = processData(downloadData(user_url))
+    while True:
+        id = input('Please enter an ID number: ')
+        id_int = int(id)
+        displayPerson(id, new_dict)
+        if id_int <= 0:
+            break
+
    # parser = argparse.ArgumentParser()
    # parser.add_argument("--url", help="URL to the datafile", type=str, required=True)
    # args = parser.parse_args()
