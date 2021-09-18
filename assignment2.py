@@ -18,7 +18,6 @@ def processData(file_content):
     header = True
     linenum = -1
     for data in file_content.split('\n')[:-1]:
-        linenum += 1
         if header:
             header = False
             continue
@@ -28,29 +27,22 @@ def processData(file_content):
                 stripped_date = datetime.datetime.strptime((parsed_data[2]), '%d/%m/%Y')
                 parsed_dict[parsed_data[0]] = (parsed_data[1], stripped_date)
             except ValueError:
-                logging.error(f'Error processing line:{linenum} for ID:{parsed_data[0]}')
+                logging.error(f'Error processing line:{data} for ID:{parsed_data[0]}')
     return parsed_dict
 
 
 # takes in an id and a dictionary, checks if the id exists, and prints out the ID, name, and birthday of the associated person
 def displayPerson(id, personData):
-    #id_str = str(id)
     person = personData.get(id)
-    print(personData.get(id))
+    #print(personData.get(id))
+    birthday = person[1].strftime('%b %d, %Y')
     if person:
-        print(f'Person {id} is {person[0]} with a birthday of {person[1]}')
+        print(f'Person {id} is {person[0]} with a birthday of {birthday}')
     else:
         print('No such person exists.')
 
 def main(url):
     print(f"Running main with URL = ...")
-
-    pass
-
-main(user_url)
-
-if __name__ == "__main__":
-    """Main entry point"""
     new_dict = processData(downloadData(user_url))
     while True:
         id = input('Please enter an ID number: ')
@@ -59,7 +51,11 @@ if __name__ == "__main__":
         if id_int <= 0:
             break
 
-   # parser = argparse.ArgumentParser()
-   # parser.add_argument("--url", help="URL to the datafile", type=str, required=True)
-   # args = parser.parse_args()
-   # main(args.url)
+main(user_url)
+
+if __name__ == "__main__":
+    """Main entry point"""
+   #parser = argparse.ArgumentParser()
+   #parser.add_argument("--url", help="URL to the datafile", type=str, required=True)
+   #args = parser.parse_args()
+   #main(args.url)
